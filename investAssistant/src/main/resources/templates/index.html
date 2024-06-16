@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Investment Assistant</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<div>
+    <h1>Investment Assistant</h1>
+    <form id="criteriaForm">
+        <!-- Форма для ввода критериев пользователем -->
+        <label for="criteria">Enter Criteria:</label>
+        <input type="text" id="criteria" name="criteria">
+        <button type="submit">Get Recommendations</button>
+    </form>
+    <div id="recommendations">
+        <!-- Сюда будут загружаться рекомендации -->
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#criteriaForm').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/api/recommend',
+                type: 'POST',
+                data: JSON.stringify({
+                    criteria: $('#criteria').val()
+                }),
+                contentType: 'application/json',
+                success: function(response) {
+                    $('#recommendations').html(JSON.stringify(response));
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
