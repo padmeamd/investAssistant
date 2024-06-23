@@ -1,23 +1,20 @@
 package com.investAssistant.investAssistant.controller;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
-
-import java.util.Map;
+import com.investAssistant.investAssistant.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api")
 public class RecommendationController {
 
-    @Value("${python.api.url}")
-    private String pythonApiUrl;
+    @Autowired
+    private UserService userService;
 
-    @PostMapping("/recommend")
-    public ResponseEntity<?> getRecommendations(@RequestBody Map<String, Object> criteria) {
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<Map> response = restTemplate.postForEntity(pythonApiUrl + "/predict", criteria, Map.class);
-        return ResponseEntity.ok(response.getBody());
+    @GetMapping("/file-content")
+    public String getFileContent() {
+        return userService.getFileContent();
     }
 }
